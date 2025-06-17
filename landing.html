@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to SWAG</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f4f4f4; 
+            text-align: center;
+        }
+        header {
+            background: #222;
+            color: #fff;
+            padding: 2rem 0;
+        }
+        .images {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .images img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .cta {
+            margin: 2rem 0;
+        }
+        button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: #0078d7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005fa3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to SWAG</h1>
+        <p>Your one-stop solution for awesome web apps!</p>
+    </header>
+    <section class="images">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Nature">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Mountains">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="City">
+    </section>
+    <section class="cta">
+        <h2>Get Started Today!</h2>
+        <button>Sign Up</button>
+    </section>
+</body>
+</html>
