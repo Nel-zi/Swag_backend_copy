@@ -1,0 +1,17 @@
+{
+  "name": "swag-landing",
+  "version": "1.0.0",
+  "description": "SWAG landing page project",
+  "main": "landing.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "landing",
+    "html",
+    "swag"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {}
+}
