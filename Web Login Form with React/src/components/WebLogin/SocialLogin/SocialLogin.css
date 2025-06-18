@@ -1,0 +1,15 @@
+.social-login {
+  position: relative;
+  z-index: 12;
+}
+
+.bottom-divider {
+  position: relative;
+  width: 310.991px;
+  height: 0.25px;
+  margin: 30.298px 0 0 84.678px;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/bottom-divider.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 32;
+}

@@ -1,0 +1,115 @@
+.fast-login-text {
+  display: block;
+  position: relative;
+  height: 21px;
+  margin: 18.004px 0 0 204.349px;
+  color: #94ffbf;
+  font-family: Poppins, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 38;
+}
+
+.fast-login-container {
+  position: relative;
+  width: 310.393px;
+  height: 50.781px;
+  margin: 12.999px 0 0 84.803px;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/input-field-background.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 35;
+}
+
+.qr-code-text {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: absolute;
+  height: 41.35%;
+  top: 32.24%;
+  left: 35.42%;
+  color: #8e8e8e;
+  font-family: Poppins, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 37;
+}
+
+.rating-star-empty {
+  position: absolute;
+  width: 2.33%;
+  height: 14.24%;
+  top: 34.45%;
+  left: 6.55%;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/rating-star-empty.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 41;
+}
+
+.rating-star-filled {
+  position: absolute;
+  width: 2.33%;
+  height: 14.24%;
+  top: 34.45%;
+  left: 9.24%;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/rating-star-filled.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 43;
+}
+
+.rating-dot-empty {
+  position: absolute;
+  width: 2.33%;
+  height: 14.24%;
+  top: 51.31%;
+  left: 6.55%;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/rating-dot-empty.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 42;
+}
+
+.rating-dot-filled-1 {
+  position: absolute;
+  width: 0.36%;
+  height: 14.24%;
+  top: 51.31%;
+  left: 9.24%;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/rating-dot-filled-1.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 44;
+}
+
+.rating-dot-filled-2 {
+  position: absolute;
+  width: 0.36%;
+  height: 14.24%;
+  top: 51.31%;
+  left: 10.22%;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/rating-dot-filled-2.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 45;
+}
+
+.rating-dot-filled-3 {
+  position: absolute;
+  width: 0.36%;
+  height: 14.24%;
+  top: 51.31%;
+  left: 11.21%;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/rating-dot-filled-3.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 46;
+}

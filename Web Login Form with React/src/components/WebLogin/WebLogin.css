@@ -1,0 +1,19 @@
+.main-container {
+  position: relative;
+  width: 480px;
+  height: 746.222px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.background-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/background-image.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  z-index: 1;
+}
