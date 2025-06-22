@@ -6,7 +6,7 @@ class SignUpRequest(BaseModel):
     password: str
 
 class LoginRequest(BaseModel):
-    username: str
+    email: EmailStr
     password: str
 
 class TokenResponse(BaseModel):
