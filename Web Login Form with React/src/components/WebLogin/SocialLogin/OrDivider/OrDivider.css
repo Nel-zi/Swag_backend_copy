@@ -2,7 +2,7 @@
   position: relative;
   width: 266.768px;
   height: 21px;
-  margin: 26.202px 0 0 106.616px;
+  margin: 20.202px 0 0 106.616px;
   z-index: 18;
 }
 
@@ -27,7 +27,7 @@
 .left-divider {
   position: absolute;
   width: 41.25%;
-  height: 2.38%;
+  height: 1px;
   top: 46.6%;
   left: -0.09%;
   background: url(https://static.codia.ai/custom_image/2025-06-18/071138/left-divider.svg)
@@ -39,7 +39,7 @@
 .right-divider {
   position: absolute;
   width: 41.25%;
-  height: 2.38%;
+  height: 1px;
   top: 46.6%;
   left: 58.84%;
   background: url(https://static.codia.ai/custom_image/2025-06-18/071138/right-divider.svg)
