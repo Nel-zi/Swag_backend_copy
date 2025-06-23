@@ -2,10 +2,16 @@ import React from 'react'
 import './FastLogin.css'
 
 const FastLogin = () => {
+
+  const openQR  = () => {
+    // Add login logic here
+    alert('Open QR code...');
+  };
+
   return (
     <div className="fast-login">
       <span className="fast-login-text">Fast Login</span>
-      <button className="fast-login-button">
+      <button className="fast-login-button" onClick={openQR}>
         <span className="qr-code-text">Use QR Code</span>
         <div className="rating-star-empty"></div>
         <div className="rating-star-filled"></div>
