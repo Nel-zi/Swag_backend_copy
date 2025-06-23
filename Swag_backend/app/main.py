@@ -15,15 +15,13 @@ router = APIRouter(tags=["Users"])
 app = FastAPI()
 
 
-# Handling Cors
-origins = ["*"]
-
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+  CORSMiddleware,
+  allow_origins=["http://192.168.225.158:8000"],
+  allow_origin_regex=r"http://192\.168\.1\.\d{1,3}:\d+",   # any .1.x on any port
+  allow_credentials=True,
+  allow_methods=["*"],
+  allow_headers=["*"],
 )
 
 
@@ -95,7 +93,7 @@ def get_user(username: str = Depends(get_current_username)):
     return {"message": f"Hello, {username}"}
 
 
-# Add session middleware before any routers that use it
+# Adding session middleware before any routers that use it
 app.add_middleware(SessionMiddleware, secret_key=settings.SESSION_SECRET_KEY)
 
 # Mount routers
