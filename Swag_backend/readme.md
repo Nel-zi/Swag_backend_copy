@@ -76,10 +76,10 @@ With your virtual environment activated, run:
 fastapi dev app/main.py
 ```
 
-By default, the API will be served at:
+By default, the API will be served at: Your localhost and port
 
 ```
-http://127.0.0.1:8000
+E.g, http://127.0.0.1:8000
 ```
 
 ---
@@ -106,7 +106,7 @@ app.add_middleware(
 
 - **Method:** `POST`
 - **Path:** `/signup`
-- **URL:** `http://127.0.0.1:8000/signup`
+- **URL:** Example URL>> `http://127.0.0.1:8000/signup`
 - **Description:** Create a new user account.
 - **Request Body (JSON):**
   ```json
@@ -124,7 +124,7 @@ app.add_middleware(
 
 - **Method:** `POST`
 - **Path:** `/login`
-- **URL:** `http://127.0.0.1:8000/login`
+- **URL:** Example URL>> `http://127.0.0.1:8000/login`
 - **Description:** Authenticate an existing user and receive a JWT.
 - **Request Body (JSON):**
   ```json
@@ -147,7 +147,7 @@ app.add_middleware(
 
 - **Method:** `GET`
 - **Path:** `/user`
-- **URL:** `http://127.0.0.1:8000/user`
+- **URL:** Example URL>> `http://127.0.0.1:8000/user`
 - **Description:** Retrieve details for the currently authenticated user.
 - **Headers:**
   ```http
@@ -197,5 +197,5 @@ curl -X GET http://127.0.0.1:8000/user \
 
 ---
 
-> For any questions, missing env variable details, or additional endpoints, please reach out to the back-end maintainer. Happy coding!
+> For any questions, missing env variable details, or additional endpoints, please reach out to me.
 
