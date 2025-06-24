@@ -1,8 +1,7 @@
 import time
 from passlib.hash import bcrypt
-from jose import jwt
 from .config import settings
-
+import jwt
 
 JWT_SECRET = settings.JWT_SECRET
 JWT_ALGORITHM = settings.JWT_ALGORITHM
@@ -23,4 +22,7 @@ def create_access_token(subject: str) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 def verify_token(token: str) -> dict:
-    return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    try:
+        return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except jwt.PyJWTError:
+        raise

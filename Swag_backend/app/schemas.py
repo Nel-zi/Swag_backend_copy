@@ -6,9 +6,20 @@ class SignUpRequest(BaseModel):
     password: str
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    identifier: str    # can be email or username
     password: str
+
+
+class VerifyIdentifierRequest(BaseModel):
+    identifier: str  # can be email or username
+
+
+class VerifyIdentifierResponse(BaseModel):
+    exists: bool
+
 
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
