@@ -17,13 +17,21 @@ router = APIRouter(tags=["Users"])
 app = FastAPI()
 
 
+# app.add_middleware(
+#   CORSMiddleware,
+#   allow_origins=["http://192.168.225.158:8000"],
+#   allow_origin_regex=r"http://192\.168\.1\.\d{1,3}:\d+",   # any .1.x on any port
+#   allow_credentials=True,
+#   allow_methods=["*"],
+#   allow_headers=["*"],
+# )
+
 app.add_middleware(
-  CORSMiddleware,
-  allow_origins=["http://192.168.225.158:8000"],
-  allow_origin_regex=r"http://192\.168\.1\.\d{1,3}:\d+",   # any .1.x on any port
-  allow_credentials=True,
-  allow_methods=["*"],
-  allow_headers=["*"],
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -94,8 +102,6 @@ def login(req: LoginRequest):
 
 
 
-
-
 # Instantiate the HTTP Bearer security scheme
 security = HTTPBearer()
 
@@ -132,20 +138,17 @@ def get_current_username(
 
 
 
+@app.get("/health")
+def health():
+    # FastAPI sees the dict and returns a JSONResponse under the hood
+    return {"status": "ok"}
+
+
+
 # --- Protected endpoint that always sees a username ---
 @router.get("/user", response_model=dict)
 def get_user(username: str = Depends(get_current_username)):
     return {"message": f"Hello, {username}"}
-
-
-
-
-
-
-
-
-
-
 
 
 # Adding session middleware before any routers that use it
@@ -153,5 +156,4 @@ app.add_middleware(SessionMiddleware, secret_key=settings.SESSION_SECRET_KEY)
 
 # Mount routers
 app.include_router(router, prefix="")              # Your signup/login routes
-app.include_router(oauth_router, prefix="/oauth")  # OAuth routes under /oauth
-
+app.include_router(oauth_router, prefix="")  # OAuth routes under /oauth

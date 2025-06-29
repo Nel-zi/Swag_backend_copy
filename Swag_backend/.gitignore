@@ -5,5 +5,7 @@ __pycache__/
 env/
 venv/
 
-app/oauth.py
+#app/oauth.py
 test/
+
+.pytest_cache/
