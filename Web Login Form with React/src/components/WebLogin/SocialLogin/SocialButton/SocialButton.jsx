@@ -41,30 +41,10 @@ const SocialButton = ({ type, text, icon, backgroundImage }) => {
     }
   }
 
-  const openAPI  = () => {
-    switch (type) {
-      case 'facebook':
-        // Add login logic here
-        alert('Open Faceboof API...');
-        return ''
-      case 'google':
-        // Add login logic here
-        alert('Open Google API...');
-        return ''
-      case 'apple':
-        // Add login logic here
-        alert('Open Apple API...');
-        return ''
-      default:
-        return ''
-    }
-  };
-
   return (
     <button 
       className={`social-button ${getMarginClass()}`}
       style={{ backgroundImage: `url(${backgroundImage})` }}
-      onClick={openAPI}
     >
       <div 
         className={`social-icon ${getIconClass()}`}

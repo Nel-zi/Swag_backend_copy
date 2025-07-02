@@ -1,14 +1,14 @@
-import React from 'react'
-import './OrDivider.css'
+import React from "react";
+import "./OrDivider.css";
 
 const OrDivider = () => {
   return (
-    <div className="or-divider-wrapper">
-      <span className="or-text">or</span>
-      <div className="left-divider"></div>
-      <div className="right-divider"></div>
+    <div className="flex flex-row gap-3 items-center justify-center w-full my-6">
+      <hr className="border-1 border-gray-400 w-[25%]" />
+      <span className=" text-white">or</span>
+      <hr className="border-1 border-gray-400 w-[25%]" />
     </div>
-  )
-}
+  );
+};
 
-export default OrDivider
+export default OrDivider;

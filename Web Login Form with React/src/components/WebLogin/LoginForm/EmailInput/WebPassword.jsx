@@ -1,15 +1,30 @@
-import React from 'react';
+import React from "react";
+//import { IoArrowBack, IoClose } from "react-icons/io5";
 import { useState } from 'react';
 import './WebPassword.css'
 //import { FaLock } from 'react-icons/fa';
+//import { AuthContext } from "../../../../contexts/AuthContext";
+
 
 const WebPassword = () => {
   const [password, setPassword] = useState('');
+  //const { login } = useContext(AuthContext);
+
+  
+  const handlePasswordSubmit = async e => {
+    alert("logging in");};/*
+    e.preventDefault();
+    try {
+      await login(identifier, password);
+    } catch {
+      setError('Invalid credentials');
+    }
+  };
 
   const handlepassword = () => {
     // Add login logic here
     alert('Logging in...');
-  };
+  };*/
 
   return (
     <div className="password-container">
@@ -18,7 +33,6 @@ const WebPassword = () => {
         <h2 className="password-title">Log in</h2>
         <button className="nav-button close-button">×</button>
       </div>
-
       <div className="password-content">
         <p className="password-instruction">Enter your password!</p>
         <div className="password-input-wrapper">
@@ -36,7 +50,7 @@ const WebPassword = () => {
             placeholder="**********"
           />
         </div>
-        <button className="password-button" onClick={handlepassword}>
+        <button className="password-button" onClick={handlePasswordSubmit}>
           Login
         </button>
       </div>

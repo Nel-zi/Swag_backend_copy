@@ -1,8 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
     "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
     "Source Han Sans CN", sans-serif;
+  width: 100%;
+  height: 100%;
 }
 
 * {
@@ -11,10 +17,17 @@
   box-sizing: border-box;
 }
 
+html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
-  font-family: 'Poppins', var(--default-font-family);
-  background: #000;
+  font-family: "Poppins", var(--default-font-family);
+  background: #ffffff;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 input,
@@ -22,4 +35,8 @@ select,
 textarea,
 button {
   outline: 0;
+}
+
+#root {
+  height: 100%;
 }
