@@ -1,8 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
     "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
     "Source Han Sans CN", sans-serif;
+  width: 100%;
+  height: 100%;
 }
 
 * {
@@ -11,10 +17,17 @@
   box-sizing: border-box;
 }
 
+html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
-  font-family: 'Poppins', var(--default-font-family);
-  background: #000;
+  font-family: "Poppins", var(--default-font-family);
+  /* background: #ba4747; */
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 input,
@@ -22,4 +35,34 @@ select,
 textarea,
 button {
   outline: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+/* Custom scrollbar for product card list */
+.flex-wrap.max-h-\[800px\].overflow-y-auto.pr-2::-webkit-scrollbar {
+  width: 5px;
+}
+.flex-wrap.max-h-\[800px\].overflow-y-auto.pr-2::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: linear-gradient(90deg, #007f7d 0%, #59cca4 59%, #94ffbf 100%);
+}
+.flex-wrap.max-h-\[800px\].overflow-y-auto.pr-2::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* For Firefox */
+.flex-wrap.max-h-\[800px\].overflow-y-auto.pr-2 {
+  scrollbar-width: thin;
+  scrollbar-color: #59cca4 #23232a;
+}
+.hide-scrollbar {
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }

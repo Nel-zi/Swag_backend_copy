@@ -17,7 +17,7 @@
   position: relative;
   width: 310.393px;
   height: 50.781px;
-  margin: 13px 0 0 84.803px;
+  /* margin: 13px 0 0 84.803px; */
   background: url(https://static.codia.ai/custom_image/2025-06-18/071138/form-field-1.svg)
     no-repeat center;
   background-size: 100% 100%;
@@ -56,4 +56,42 @@
   background-size: 100% 100%;
   z-index: 30;
   pointer-events: none;
+}
+
+.error-field {
+  border: 2px solid #ff4d4f !important;
+  border-radius: 16px !important; /* Match your input's border radius */
+  outline: none;
+  background: transparent;
+}
+
+.login-button {
+  position: relative;
+  width: 310.393px;
+  height: 50.781px;
+  margin: 14.719px 0 0 84.803px;
+  background: url(https://static.codia.ai/custom_image/2025-06-18/071138/form-field-2.svg)
+    no-repeat center;
+  background-size: 100% 100%;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.login-button-text {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: absolute;
+  height: 41.35%;
+  top: 32.89%;
+  left: 43.88%;
+  color: #ffffff;
+  font-family: Poppins, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 29;
 }

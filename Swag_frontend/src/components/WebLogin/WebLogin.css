@@ -1,7 +1,8 @@
 .main-container {
   position: relative;
-  width: 480px;
-  height: 746.222px;
+  width: 100%;
+  max-width: 480px;
+  height: 100%;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -16,4 +17,21 @@
     no-repeat center;
   background-size: 100% 100%;
   z-index: 1;
+}
+
+/* Add responsive styles for the login modal */
+@media (max-width: 640px) {
+  .main-container {
+    width: 95%;
+    max-width: 100%;
+  }
+}
+
+/* Ensure the modal is scrollable on very small screens */
+@media (max-height: 700px) {
+  .main-container {
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }

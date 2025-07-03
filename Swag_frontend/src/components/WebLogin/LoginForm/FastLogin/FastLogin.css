@@ -13,7 +13,7 @@
   z-index: 38;
 }
 
-.fast-login-button {
+.fast-login-container {
   position: relative;
   width: 310.393px;
   height: 50.781px;
@@ -21,7 +21,6 @@
   background: url(https://static.codia.ai/custom_image/2025-06-18/071138/input-field-background.svg)
     no-repeat center;
   background-size: 100% 100%;
-  border: none;
   cursor: pointer;
   z-index: 35;
 }

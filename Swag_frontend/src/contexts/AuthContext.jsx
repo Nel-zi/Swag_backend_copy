@@ -1,5 +1,5 @@
 import React from "react";
-import { createContext } from "react";
+import { createContext , useContext} from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,9 +7,11 @@ import { loginUser } from "../api";
 import { registerUser } from "../api";
 import { fetchUserProfile } from "../api";
 
-const AuthContext = createContext({});
+///// Creates an authentication token
 
-const AuthProvider = ({ children }) => {
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem(token));
     const [user, setUser] = useState(null);
     const navigate = useNavigate;
@@ -24,14 +26,20 @@ const AuthProvider = ({ children }) => {
         }
     }, [token]);
 
-    const login = async(username,password) => {
-        const response = await loginUser({ username, password });
+    const login = async (identifier, password) => {
+        // 1️⃣ Build the right payload
+        const credentials = identifier.includes('@')
+            ? { email: identifier, password }
+            : { username: identifier, password };
+
+        // 2️⃣ Send to /auth/token
+        const response = await loginUser(credentials);
+  
+        // 3️⃣ On success, stash the token & redirect
         if (response?.access_token) {
-            setToken(response.access_token);
             localStorage.setItem('token', response.access_token);
-            const userProfile = await fetchUserProfile(response.access_token);
-            setUser(userProfile);
-            navigate('/Profile'); ////
+            setToken(response.access_token);
+            navigate('/profile');
         }
     };
 
@@ -54,5 +62,6 @@ const AuthProvider = ({ children }) => {
     );
 };
 
+export const useAuth = () => useContext(AuthContext);
 
-export {AuthProvider, AuthContext}
+//export default { AuthProvider, AuthContext, useAuth }

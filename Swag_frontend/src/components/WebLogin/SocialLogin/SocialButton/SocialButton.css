@@ -10,21 +10,24 @@
 }
 
 .social-button-facebook {
-  margin: 23px 0 0 84.803px;
+  display: flex;
+  justify-self: center;
   z-index: 12;
-  background-color: rgb(41, 44, 53);
+  margin: 10px 60px;
 }
 
 .social-button-google {
-  margin: 8.719px 0 0 84.803px;
+  display: flex;
+  justify-self: center;
   z-index: 13;
-  background-color: rgb(41, 44, 53);
+  margin: 10px 60px;
 }
 
 .social-button-apple {
-  margin: 8.719px 0 0 84.803px;
+  display: flex;
+  justify-self: center;
   z-index: 14;
-  background-color: rgb(41, 44, 53);
+  margin: 10px 60px;
 }
 
 .social-icon {

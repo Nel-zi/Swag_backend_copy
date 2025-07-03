@@ -1,42 +1,54 @@
-//import { useState } from 'react'
-//import { useEffect } from 'react'
-import WebLogin from './components/WebLogin/WebLogin'
-import WebPassword from './components/WebPassword/WebPassword'
-import LoginForm from './components/WebLogin/LoginForm/LoginForm'
+import React from "react";
+import WebLogin from "./components/WebLogin/WebLogin";
+import Dashboard from "./components/dashboard/Dashboard";
+import { AuthProvider } from './contexts/auth-context';
+/*
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./auth/useAuth";
+import { createAxiosInstance } from "./api/axiosInstance";
+import LoginPage from "./test pages/LoginPage";
+import AuthSuccessPage from "./test pages/AuthSuccessPage";
+import Dashboard from "./test pages/Dashboard";
+*/
 
 function App() {
-
-  //const [clickResult, setClickResult] = useState('empty'); //holds changes to clickresult
-
-  //const [showLoginPopup, setShowLoginPopup] = useState(false);
-  //const [showPasswordPopup, setShowPasswordPopup] = useState(false);
-  //const [showQRPopup, setShowQRPopup] = useState(false);
-
-  //const handleOpenLogin = () => setShowLoginPopup(true);
-  //const handleCloseLogin = () => setShowLoginPopup(false);
-  //const handleOpenPassword = () => setShowPasswordPopup(true);
-  //const handleClosePassword = () => setShowPasswordPopup(false);
-  //const handleOpenQR = () => setShowQRPopup(true);
-  //const handleCloseQR = () => setShowQRPopup(false);
-
-  // obtains a result from handleLoginButtonClick and passes to clickresult
-  //const handleLoginButtonClick = (result) => {
-  //  setClickResult(result);
-  //  alert({clickResult});
-  //};
-
-  //function handleloginclick (){
-  //  console.log('handleloginclick entered')
-  //  setClickResult(output);
-  //  alert('hi');
-  //}
-
-  //pushes handleLoginButtonClick into LoginForm as onDataSend <LoginForm onDataSend={handleLoginButtonClick} />
+  //const { token, logout } = useAuth();  // get auth state and logout function
+  //const axiosInstance = createAxiosInstance(token, logout);  // axios with auth
+  //const isAuth = Boolean(token);  // whether user is logged in
+  
   return (
-    <div>
-      <WebLogin />
-    </div>
-  )
+    <AuthProvider>
+      <Dashboard />
+    </AuthProvider>
+  );
+
+  /*
+return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isAuth
+              ? <Navigate to="/dashboard" replace />  // if auth, redirect
+              : <LoginPage />  // else show login
+          }
+        />
+        <Route path="/auth-success" element={<AuthSuccessPage />} />  // OAuth callback
+        <Route
+          path="/dashboard"
+          element={
+            isAuth
+              ? <Dashboard axios={axiosInstance} />  // protected dashboard
+              : <Navigate to="/" replace />  // else back to login
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />  // catch-all
+      </Routes>
+    </Router>
+  );
+  */
+
 }
 
-export default App
+export default App;

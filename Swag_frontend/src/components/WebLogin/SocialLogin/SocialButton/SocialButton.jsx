@@ -1,78 +1,59 @@
-import React from 'react'
-import './SocialButton.css'
+import React from "react";
+import "./SocialButton.css";
 
-const SocialButton = ({ type, text, icon, backgroundImage }) => {
+const SocialButton = ({ type, text, icon, backgroundImage, authenticate }) => {
   const getMarginClass = () => {
     switch (type) {
-      case 'facebook':
-        return 'social-button-facebook'
-      case 'google':
-        return 'social-button-google'
-      case 'apple':
-        return 'social-button-apple'
+      case "facebook":
+        return "social-button-facebook";
+      case "google":
+        return "social-button-google";
+      case "apple":
+        return "social-button-apple";
       default:
-        return ''
+        return "";
     }
-  }
+  };
 
   const getIconClass = () => {
     switch (type) {
-      case 'facebook':
-        return 'social-icon-facebook'
-      case 'google':
-        return 'social-icon-google'
-      case 'apple':
-        return 'social-icon-apple'
+      case "facebook":
+        return "social-icon-facebook";
+      case "google":
+        return "social-icon-google";
+      case "apple":
+        return "social-icon-apple";
       default:
-        return ''
+        return "";
     }
-  }
+  };
 
   const getTextClass = () => {
     switch (type) {
-      case 'facebook':
-        return 'social-text-facebook'
-      case 'google':
-        return 'social-text-google'
-      case 'apple':
-        return 'social-text-apple'
+      case "facebook":
+        return "social-text-facebook";
+      case "google":
+        return "social-text-google";
+      case "apple":
+        return "social-text-apple";
       default:
-        return ''
-    }
-  }
-
-  const openAPI  = () => {
-    switch (type) {
-      case 'facebook':
-        // Add login logic here
-        alert('Open Faceboof API...');
-        return ''
-      case 'google':
-        // Add login logic here
-        alert('Open Google API...');
-        return ''
-      case 'apple':
-        // Add login logic here
-        alert('Open Apple API...');
-        return ''
-      default:
-        return ''
+        return "";
     }
   };
 
   return (
-    <button 
+    <button
       className={`social-button ${getMarginClass()}`}
       style={{ backgroundImage: `url(${backgroundImage})` }}
-      onClick={openAPI}
+      onClick={authenticate}
     >
-      <div 
+      <div
         className={`social-icon ${getIconClass()}`}
         style={{ backgroundImage: `url(${icon})` }}
       ></div>
       <span className={`social-text ${getTextClass()}`}>{text}</span>
     </button>
-  )
-}
+  );
+};
 
-export default SocialButton
+export default SocialButton;
