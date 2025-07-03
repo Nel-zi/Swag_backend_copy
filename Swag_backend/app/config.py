@@ -3,7 +3,6 @@ from typing import Optional, List
 from pydantic import AnyHttpUrl
 
 
-
 class Settings(BaseSettings):
     JWT_SECRET: str
     JWT_ALGORITHM: str
@@ -15,7 +14,7 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_SECRET: Optional[str] = None
     GOOGLE_REDIRECT_URI: str
 
-    # front‑end URLs you trust your users to be redirected back to
+    # front‑end URLs I trust users to be redirected back to
     ALLOWED_REDIRECT_URIS: str
     SECRET_KEY: str
 
@@ -24,8 +23,5 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
         # this makes Pydantic read JWT_SECRET → jwt_secret, etc.
         case_sensitive = False
-
-        #<<< add this so comma‑separated env values become Python lists
-        # env_nested_delimiter = ","
 
 settings = Settings()           # type: ignore
