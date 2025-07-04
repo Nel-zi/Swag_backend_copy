@@ -1,7 +1,7 @@
 /*
   axiosInstance.js
   Creates a pre-configured Axios HTTP client that automatically
-  attaches your JWT and handles “Unauthorized” errors globally.
+  attaches the JWT and handles “Unauthorized” errors globally.
 */
 
 // src/api/axiosInstance.jsx

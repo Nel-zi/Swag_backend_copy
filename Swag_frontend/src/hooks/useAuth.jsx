@@ -48,7 +48,7 @@ export function useAuth() {
   const signup = async (userData) => {
     try {
       const res = await registerUser(userData);
-      // if your backend returns an access token immediately:
+      // if the backend returns an access token immediately:
       if (res.access_token) {
         saveToken(res.access_token);
         navigate("/dashboard");
@@ -67,14 +67,14 @@ export function useAuth() {
   const logout = () => {
     setToken(null);                       // Clear state
     localStorage.removeItem("token");     // Remove from storage
-    navigate("/login");                   // === UPDATED REDIRECT
+    navigate("/login");                   
   };
 
   return {
     token,
     saveToken,
-    login,     // === EXPOSED
-    signup,    // === EXPOSED
-    logout,    // === UPDATED
+    login,     
+    signup,    
+    logout,    
   };
 }

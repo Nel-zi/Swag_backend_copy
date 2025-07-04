@@ -5,11 +5,6 @@
 */
 
 // src/pages/LoginPage.js
-/*
-  src/pages/LoginPage.jsx
-  Renders Google OAuth button and traditional login (username or email + password),
-  with inline error messaging on login failure, plus a signup link.
-*/
 
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
@@ -101,7 +96,7 @@ export default function LoginPage() {
         </button>
       </form>
 
-      {/* NEW: link to signup */}
+      {/* link to signup */}
       <p className="text-center mt-4">
         Don’t have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign up</Link>
       </p>

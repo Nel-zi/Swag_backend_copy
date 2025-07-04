@@ -1,11 +1,11 @@
 // src/api/auth.js
 import axios from "axios";
 
-// read from your .env: VITE_API_BASE_URL="https://api.example.com"
+// read from the .env: VITE_API_BASE_URL="https://api.example.com"
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export const loginUser = async ({ identifier, password }) => {
-  // send the exact schema your backend validates:
+  // send the exact schema the backend validates:
   const payload = { identifier, password };
 
   console.log("→ POST /login payload:", payload);
@@ -29,7 +29,7 @@ export const loginUser = async ({ identifier, password }) => {
 /**
  * registerUser
  * @param {{ username: string; email: string; password: string }} userData
- * @returns {Promise<object>} newly created user (or whatever your API returns)
+ * @returns {Promise<object>} newly created user (or whatever the API returns)
  */
 export const registerUser = async (userData) => {
   // e.g. { username, email, password }
@@ -59,7 +59,7 @@ export const fetchUserProfile = async (token) => {
     const res = await axios.get(`${API_BASE}/user`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return res.data; // your user object
+    return res.data; // the user object
   } catch (err) {
     console.error("Fetch profile error:", err);
     throw err;

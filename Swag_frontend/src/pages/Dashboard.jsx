@@ -2,7 +2,7 @@
   src/pages/Dashboard.js
   Example of a protected page: uses AuthContext token,
   fetches secured data via axios with Authorization header.
-  Adjust the endpoint to match your backend (e.g. "/auth/verify-identifier" or
+  Adjust the endpoint to match the backend (e.g. "/auth/verify-identifier" or
   other secured routes).
 */
 
