@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings
 from typing import Optional, List
-from pydantic import AnyHttpUrl
 
 
 class Settings(BaseSettings):
@@ -22,6 +21,6 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         # this makes Pydantic read JWT_SECRET → jwt_secret, etc.
-        case_sensitive = False
+        # case_sensitive = False
 
 settings = Settings()           # type: ignore

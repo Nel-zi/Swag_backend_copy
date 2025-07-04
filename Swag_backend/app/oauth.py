@@ -7,6 +7,7 @@ import logging
 from fastapi import APIRouter, Request, HTTPException
 from starlette.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuth, OAuthError
+from starlette.responses import RedirectResponse
 
 from .auth import create_access_token
 from .config import settings
@@ -40,13 +41,17 @@ def decode_state(state_str: str) -> dict:
         raise HTTPException(400, "Invalid state signature")
     return json.loads(payload.decode())
 
+
+
+
+
 @router.get("/auth/google/login", response_class=RedirectResponse)
 async def google_login(request: Request) -> RedirectResponse:
-    redirect_uri = request.query_params.get("redirect_uri")
-    if not redirect_uri or redirect_uri not in settings.ALLOWED_REDIRECT_URIS:
+    frontendRedirectUri = request.query_params.get("redirect_uri")
+    if not frontendRedirectUri or frontendRedirectUri not in settings.ALLOWED_REDIRECT_URIS:
         raise HTTPException(400, "Invalid or missing redirect_uri")
-    state = encode_state({"redirect_uri": redirect_uri})
-    return await oauth.google.authorize_redirect(
+    state = encode_state({"f_redirect_uri": frontendRedirectUri})
+    return await oauth.google.authorize_redirect(               #type: ignore
         request,
         redirect_uri=settings.GOOGLE_REDIRECT_URI,
         state=state
@@ -56,12 +61,18 @@ async def google_login(request: Request) -> RedirectResponse:
 @router.get("/auth/google/callback", response_class=RedirectResponse)
 async def google_callback(request: Request) -> RedirectResponse:
     try:
-        token = await oauth.google.authorize_access_token(request)
+        token = await oauth.google.authorize_access_token(request)        #type: ignore
+        
+        userinfo_endpoint = (
+            "https://openidconnect.googleapis.com/v1/userinfo"
+        )
+        resp     = await oauth.google.get(userinfo_endpoint, token=token)     #type: ignore
+        userinfo = resp.json()
+    
     except OAuthError as e:
         logger.error("OAuthError in google_callback", extra={"error": e.error, "desc": e.description})
         raise HTTPException(400, "Google authentication failed")
 
-    userinfo = token.get("userinfo") or {}
     if not userinfo.get("email_verified"):
         raise HTTPException(400, "Email not verified by Google")
 
@@ -85,9 +96,8 @@ async def google_callback(request: Request) -> RedirectResponse:
 
     raw_state = request.query_params.get("state") or ""
     state = decode_state(raw_state)
-    frontend_redirect = state["redirect_uri"]
+    frontend_redirect = state["f_redirect_uri"]
 
-    # Redirect with token (consider HttpOnly cookie in real apps)
+    # Redirect with token
     return RedirectResponse(f"{frontend_redirect}?token={jwt}")
-
 
