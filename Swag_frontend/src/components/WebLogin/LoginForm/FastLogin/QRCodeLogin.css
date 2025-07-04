@@ -1,0 +1,114 @@
+.qr-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(20, 20, 30, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.qr-modal {
+  background: #23242a;
+  border-radius: 24px;
+  padding: 32px 32px 24px 32px;
+  width: 370px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #94ffbf;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.qr-modal-title {
+  color: #94ffbf;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 18px 0px;
+  text-align: center;
+  margin-top: 0;
+}
+
+.qr-modal-image {
+  margin-bottom: 18px;
+}
+
+.qr-modal-image-border {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 18px; */
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  box-sizing: border-box;
+}
+
+.qr-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 4px;
+  background: #18191f;
+}
+
+.qr-modal-instructions {
+  color: #f9f9f9;
+  font-size: 15px;
+  margin-bottom: 24px;
+  /* text-align: center; */
+}
+
+.qr-modal-footer {
+  border-top: 1px solid #444;
+  padding-top: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  color: #f9f9f9;
+  font-size: 14px;
+}
+
+.qr-signup-link {
+  color: #94ffbf;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.qr-login-container {
+  background: #292c35;
+  border-radius: 24px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-back-btn {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: none;
+  border: none;
+  color: #94ffbf;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* All QR code modal styles are now handled by Tailwind in the component */

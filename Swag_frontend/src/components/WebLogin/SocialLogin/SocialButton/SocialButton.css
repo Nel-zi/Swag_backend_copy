@@ -1,0 +1,95 @@
+.social-button {
+  position: relative;
+  width: 310.393px;
+  height: 50.781px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.social-button-facebook {
+  display: flex;
+  justify-self: center;
+  z-index: 12;
+  margin: 10px 60px;
+}
+
+.social-button-google {
+  display: flex;
+  justify-self: center;
+  z-index: 13;
+  margin: 10px 60px;
+}
+
+.social-button-apple {
+  display: flex;
+  justify-self: center;
+  z-index: 14;
+  margin: 10px 60px;
+}
+
+.social-icon {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+.social-icon-facebook {
+  width: 8.56%;
+  height: 52.3%;
+  top: 23.08%;
+  left: 16.03%;
+  z-index: 27;
+}
+
+.social-icon-google {
+  width: 8.36%;
+  height: 52.12%;
+  top: 25.14%;
+  left: 19.03%;
+  z-index: 24;
+}
+
+.social-icon-apple {
+  width: 7.42%;
+  height: 55.73%;
+  top: 20.87%;
+  left: 20.83%;
+  z-index: 21;
+}
+
+.social-text {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: absolute;
+  height: 41.35%;
+  color: #8e8e8e;
+  font-family: Poppins, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.social-text-facebook {
+  top: 31%;
+  left: 28.85%;
+  z-index: 26;
+}
+
+.social-text-google {
+  top: 32.7%;
+  left: 31.84%;
+  z-index: 23;
+}
+
+.social-text-apple {
+  top: 31.84%;
+  left: 33.03%;
+  z-index: 20;
+}

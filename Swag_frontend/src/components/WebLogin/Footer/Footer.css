@@ -1,0 +1,35 @@
+.footer {
+  position: relative;
+  width: 221px;
+  height: 21px;
+  margin: 19.361px 0 0 127.785px;
+  font-family: Poppins, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  text-align: left;
+  text-overflow: initial;
+  white-space: nowrap;
+  z-index: 7;
+}
+
+.footer-text {
+  position: relative;
+  color: #f9f9f9;
+  font-family: Poppins, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  text-align: left;
+}
+
+.footer-link {
+  position: relative;
+  color: #94ffbf;
+  font-family: Poppins, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  text-align: left;
+  cursor: pointer;
+}

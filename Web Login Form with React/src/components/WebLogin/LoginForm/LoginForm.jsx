@@ -1,17 +1,19 @@
-import React from 'react'
-import FastLogin from './FastLogin/FastLogin'
-import EmailInput from './EmailInput/EmailInput'
-import LoginButton from './LoginButton/LoginButton'
-import './LoginForm.css'
+import React from "react";
+import FastLogin from "./FastLogin/FastLogin";
+import EmailInput from "./EmailInput/EmailInput";
+import "./LoginForm.css";
 
-const LoginForm = () => {
+const LoginForm = ({ onSwitchToQR, setLoginError, onSwitchToPassword }) => {
   return (
     <section className="login-form">
-      <FastLogin />
-      <EmailInput />
-      <LoginButton />
+      <FastLogin onSwitchToQR={onSwitchToQR} />
+      <EmailInput 
+        showLoginError={setLoginError} 
+        onSwitchToPassword={onSwitchToPassword}
+      />
+      
     </section>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

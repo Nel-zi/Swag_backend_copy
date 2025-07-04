@@ -1,0 +1,11 @@
+__pycache__/
+.venv
+.env
+
+env/
+venv/
+
+#app/oauth.py
+test/
+
+.pytest_cache/
