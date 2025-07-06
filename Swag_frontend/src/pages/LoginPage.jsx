@@ -4,11 +4,9 @@
   with inline error messaging on login failure.
 */
 
-// src/pages/LoginPage.js
-
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate, Link } from "react-router-dom";  // ← Added Link import
+import React, { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 import { googleLogin } from "../api/auth";
 
 export default function LoginPage() {
@@ -16,7 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   // Redirect to Google OAuth
@@ -29,15 +27,23 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     try {
-      await login(identifier, password);
-      navigate("/profile");
+      // Pass credentials as an object to match context API signature
+      await login({ identifier, password });
+      // Optionally navigate here if context login does not redirect
+      navigate("/dashboard");
     } catch (err) {
       console.error("Login failed", err);
-      setError(
-        err.response?.data?.detail ||
-          err.message ||
-          "An unexpected error occurred. Please try again."
-      );
+      // Extract user-friendly message from possible response shapes
+      let message = "An unexpected error occurred. Please try again.";
+      const respData = err.response?.data;
+      if (respData?.errors && Array.isArray(respData.errors)) {
+        message = respData.errors.map(e => e.msg || JSON.stringify(e)).join(", ");
+      } else if (respData?.detail) {
+        message = respData.detail;
+      } else if (err.message) {
+        message = err.message;
+      }
+      setError(message);
     }
   };
 

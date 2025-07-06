@@ -5,7 +5,9 @@
 
 import React, { useState } from "react";                          // ← React import
 import { useNavigate, Link } from "react-router-dom";             // ← Link import
-import { useAuth } from "../hooks/useAuth";
+
+import { useAuth } from "../contexts/AuthContext";
+
 import { googleLogin } from "../api/auth";                         // ← Google signup/login
 
 export default function SignupPage() {

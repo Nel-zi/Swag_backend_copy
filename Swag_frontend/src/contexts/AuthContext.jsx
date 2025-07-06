@@ -1,68 +1,196 @@
+
+
+
+
+
+
+// // src/contexts/AuthContext.jsx
+// import React, { createContext, useContext, useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import {
+//   loginUser,
+//   registerUser,
+//   googleLogin,      // if you need Google flow
+//   fetchUserProfile, // to pull profile after login
+// } from "../api/auth";
+
+// const AuthContext = createContext();
+
+// export function AuthProvider({ children }) {
+//   const navigate = useNavigate();
+
+//   // === state ===
+//   const [token, setToken] = useState(() => localStorage.getItem("token"));
+//   const [user, setUser]   = useState(null);
+
+//   // === helper to persist token ===
+//   const saveToken = (newToken) => {
+//     setToken(newToken);
+//     localStorage.setItem("token", newToken);
+//   };
+
+//   // === fetch profile once we have a token ===
+//   useEffect(() => {
+//     if (!token) return;
+//     (async () => {
+//       try {
+//         const profile = await fetchUserProfile(token);
+//         setUser(profile);
+//       } catch (err) {
+//         console.error("Invalid token, logging out", err);
+//         logout();
+//       }
+//     })();
+//   }, [token]);
+
+//   // === login ===
+//   const login = async ({ identifier, password }) => {
+//     const { access_token } = await loginUser({ identifier, password });
+//     saveToken(access_token);
+//     navigate("/dashboard");
+//   };
+
+//   // === signup ===
+//   const signup = async (userData) => {
+//     const res = await registerUser(userData);
+//     if (res.access_token) {
+//       saveToken(res.access_token);
+//       navigate("/dashboard");
+//     } else {
+//       navigate("/login");
+//     }
+//     return res;
+//   };
+
+//   // === google login (if you had it) ===
+//   const loginWithGoogle = async () => {
+//     const { access_token } = await googleLogin();
+//     saveToken(access_token);
+//     navigate("/dashboard");
+//   };
+
+//   // === logout ===
+//   const logout = () => {
+//     setUser(null);
+//     setToken(null);
+//     localStorage.removeItem("token");
+//     navigate("/login");
+//   };
+
+//   return (
+//     <AuthContext.Provider value={{
+//       token,
+//       user,
+//       login,
+//       signup,
+//       loginWithGoogle,
+//       logout,
+//     }}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// }
+
+// // consumer hook — this is all your components import!
+// export function useAuth() {
+//   return useContext(AuthContext);
+// }
+
+
+
+
+
+
+
 // src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser, registerUser, fetchUserProfile } from "../api/auth"; 
+import {
+  loginUser,
+  registerUser,
+  googleLogin,      // if you need Google flow
+  fetchUserProfile, // to pull profile after login
+} from "../api/auth";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem("token"));
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  // === state ===
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [user, setUser]   = useState(null);
+
+  // === helper to persist token ===
+  const saveToken = (newToken) => {
+    setToken(newToken);
+    localStorage.setItem("token", newToken);
+  };
+
+  // === fetch profile once we have a token ===
   useEffect(() => {
     if (!token) return;
-
-    async function loadUser() {
+    (async () => {
       try {
         const profile = await fetchUserProfile(token);
         setUser(profile);
       } catch (err) {
-        console.error("Failed to fetch user:", err);
-        setToken(null);
-        localStorage.removeItem("token");
-        navigate("/login");
+        console.error("Invalid token, logging out", err);
+        logout();
       }
-    }
+    })();
+  }, [token]);
 
-    loadUser();
-  }, [token, navigate]);
+  // === login ===
+  const login = async ({ identifier, password }) => {
+    const { access_token } = await loginUser({ identifier, password });
+    saveToken(access_token);
+    navigate("/dashboard");
+  };
 
-  // Login with identifier (email or username) and password
-  const login = async (identifier, password) => {
-    const response = await loginUser({ identifier, password });
-    if (response?.access_token) {
-      localStorage.setItem("token", response.access_token);
-      setToken(response.access_token);
-      navigate("/profile");
+  // === signup ===
+  const signup = async (userData) => {
+    const res = await registerUser(userData);
+    if (res.access_token) {
+      saveToken(res.access_token);
+      navigate("/dashboard");
     } else {
-      throw new Error("Login failed");
+      navigate("/login");
     }
+    return res;
   };
 
-  // Register user
-  const register = async (userData) => {
-    // userData should include { username, email, password }
-    await registerUser(userData);
-    navigate("/login");
+  // === google login (if you had it) ===
+  const loginWithGoogle = async () => {
+    const { access_token } = await googleLogin();
+    saveToken(access_token);
+    navigate("/dashboard");
   };
 
-  // Logout
+  // === logout ===
   const logout = () => {
-    setToken(null);
     setUser(null);
+    setToken(null);
     localStorage.removeItem("token");
     navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, register, logout }}>
+    <AuthContext.Provider value={{
+      token,
+      user,
+      login,
+      signup,
+      loginWithGoogle,
+      logout,
+      saveToken  // ← EXPOSE saveToken to allow raw token setting
+    }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// Custom hook for accessing auth context
+// consumer hook — this is all your components import!
 export function useAuth() {
   return useContext(AuthContext);
 }

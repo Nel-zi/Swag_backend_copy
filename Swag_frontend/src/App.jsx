@@ -8,7 +8,9 @@
 // src/App.js
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
+
+import { useAuth } from "./contexts/AuthContext";
+
 import { createAxiosInstance } from "./api/axiosInstance";
 import LoginPage        from "./pages/LoginPage";
 import SignupPage       from "./pages/SignupPage";      // ← ADDED
