@@ -1,7 +1,6 @@
-from fastapi import FastAPI, Depends, HTTPException, APIRouter, status, Request
-from fastapi.responses import Response
+from fastapi import FastAPI, Depends, HTTPException, APIRouter, status
 from starlette.middleware.sessions import SessionMiddleware
-from .schemas import SignUpRequest, LoginRequest, TokenResponse, VerifyIdentifierResponse, VerifyIdentifierRequest
+from .schemas import SignUpRequest, LoginRequest, TokenResponse, VerifyIdentifierResponse, VerifyIdentifierRequest, Item
 from .data_store import users
 from .auth import hash_password, verify_password, create_access_token, verify_token
 from .oauth import router as oauth_router
@@ -9,10 +8,13 @@ from .root import router as root_router
 from .config import settings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from typing import List
+
 
 
 # Define “users” router
 router = APIRouter(tags=["Users"])
+
 
 # Create the app
 app = FastAPI()
@@ -109,11 +111,12 @@ def get_current_username(
     except Exception:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token"
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
     sub = payload.get("sub")
-    # If `sub` is already a username key, return it
+    # If `sub` is a known username:
     if sub in users:
         return sub
 
@@ -124,7 +127,8 @@ def get_current_username(
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid token subject"
+        detail="Invalid token subject",
+        headers={"WWW-Authenticate": "Bearer"},
     )
 
 
@@ -139,6 +143,30 @@ def get_debug_users():
 @router.get("/user", response_model=dict)
 def get_user(username: str = Depends(get_current_username)):
     return {"message": f"Hello, {username}"}
+
+
+
+
+# protected items endpoint ===
+@router.get("/api/items", response_model=List[Item])
+def read_items(current_user: str = Depends(get_current_username)):
+    # When the db is ready, replace this with DB queries scoped to `current_user`
+    demo_data = [
+        {
+            "id": 1,
+            "title": "Men’s Sneakers",
+            "subtitle": "Sneakers • Starts $1,000",
+            "image_url": "https://images.app.goo.gl/QWrTrzkG2Rxxne61A",
+            "seller": "nikestores",
+            "condition": "Used | Astroloubi",
+            "price_usd": 1000,
+            "live_count": 25,
+        },
+        # … more items …
+    ]
+    return demo_data
+
+
 
 # Session middleware: must be added _before_ any handler that expects `request.session` to exist.
 app.add_middleware(SessionMiddleware, secret_key=settings.SESSION_SECRET_KEY)

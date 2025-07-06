@@ -1,4 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, HttpUrl
+from typing import Literal
+
 
 class SignUpRequest(BaseModel):
     username: str
@@ -23,3 +25,14 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
 
 
+
+class Item(BaseModel):
+    id: int
+    title: str
+    subtitle: str
+    image_url: HttpUrl
+    seller: str
+    condition: str
+    price_usd: float
+    currency: Literal["USD"] = "USD"
+    live_count: int
