@@ -13,7 +13,7 @@ from .auth import create_access_token
 from .config import settings
 from .data_store import users, google_users
 
-router = APIRouter()
+router = APIRouter(tags=["Google authentication"])
 logger = logging.getLogger("uvicorn.error")
 
 oauth = OAuth()
@@ -87,7 +87,7 @@ async def google_callback(request: Request) -> RedirectResponse:
         users.setdefault(username, {
             "name": name,
             "email": email,
-            "hashed_password": None,
+            "hashed_password": None,        #type:ignore
             "provider": "google"
         })
         google_users[sub] = username

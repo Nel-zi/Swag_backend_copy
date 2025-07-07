@@ -1,19 +1,22 @@
-from fastapi import FastAPI, Depends, HTTPException, APIRouter, status
+from fastapi import FastAPI, Depends, HTTPException, APIRouter, Request, Response
 from starlette.middleware.sessions import SessionMiddleware
-from .schemas import SignUpRequest, LoginRequest, TokenResponse, VerifyIdentifierResponse, VerifyIdentifierRequest, Item
+
+from .config import settings
+from .schemas import Item
 from .data_store import users
-from .auth import hash_password, verify_password, create_access_token, verify_token
 from .oauth import router as oauth_router
 from .root import router as root_router
-from .config import settings
+from .routers.users import router as users_router
+from .routers.users import get_current_username
+from .data_store import items
+
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import List
 
 
 
 # Define “users” router
-router = APIRouter(tags=["Users"])
+router = APIRouter(tags=["Items"])
 
 
 # Create the app
@@ -38,133 +41,21 @@ app.add_middleware(
 )
 
 
-# --- signup endpoint ---
-@router.post("/signup", response_model=dict)
-def signup(req: SignUpRequest):
-    if req.username in users:
-        raise HTTPException(400, "Username already exists")
-    users[req.username] = {
-        "hashed_password": hash_password(req.password),
-        "email": req.email,
-    }
-    return {"message": "User created"}
 
 
-
-
-# --- Verify identifier endpoint ---
-@router.post(
-    "/auth/verify-identifier",
-    response_model=VerifyIdentifierResponse,
-    status_code=status.HTTP_200_OK
+# ==== GET ITEMS ==== #
+@router.get(
+    "/api/items",
+    response_model=List[Item],
+    summary="List all items (protected catalog)"
 )
-def verify_identifier(req: VerifyIdentifierRequest):
-    for username, data in users.items():
-        if username == req.identifier or data.get("email") == req.identifier:
-            return {"exists": True}
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="User not found"
-    )
+def get_items(current_user: str = Depends(get_current_username)):
+    """
+    Returns the global catalog of items. Requires a valid JWT.
+    """
+    # Simply return the pre‑seeded `items` from data_store.py
+    return items
 
-
-
-# --- Login endpoint ---
-@router.post("/login", response_model=TokenResponse)
-def login(req: LoginRequest):
-    found_username = None
-    user_record = None
-
-    # Lookup by username key or email field
-    for username, data in users.items():
-        if username == req.identifier or data.get("email") == req.identifier:
-            found_username = username
-            user_record = data
-            break
-
-    # Verify existence and password hash
-    if (
-        not found_username
-        or not user_record
-        or not verify_password(req.password, user_record["hashed_password"])
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials"
-        )
-
-    token = create_access_token(found_username)
-    return {"access_token": token, "token_type": "bearer"}
-
-
-# Instantiate the HTTP Bearer security scheme
-security = HTTPBearer()
-
-# --- Dependency to extract canonical username from token ---
-def get_current_username(
-    credentials: HTTPAuthorizationCredentials = Depends(security)
-) -> str:
-    token = credentials.credentials
-
-    try:
-        payload = verify_token(token)
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    sub = payload.get("sub")
-    # If `sub` is a known username:
-    if sub in users:
-        return sub
-
-    # Otherwise, treat `sub` as an email and find the username
-    for username, data in users.items():
-        if data.get("email") == sub:
-            return username
-
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid token subject",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
-
-
-#Testing that the in memory dictionary is actually populating
-@app.get("/_debug/users")
-def get_debug_users():
-    return users
-
-
-# --- Protected endpoint that always sees a username ---
-@router.get("/user", response_model=dict)
-def get_user(username: str = Depends(get_current_username)):
-    return {"message": f"Hello, {username}"}
-
-
-
-
-# protected items endpoint ===
-@router.get("/api/items", response_model=List[Item])
-def read_items(current_user: str = Depends(get_current_username)):
-    # When the db is ready, replace this with DB queries scoped to `current_user`
-    demo_data = [
-        {
-            "id": 1,
-            "title": "Men’s Sneakers",
-            "subtitle": "Sneakers • Starts $1,000",
-            "image_url": "https://images.app.goo.gl/QWrTrzkG2Rxxne61A",
-            "seller": "nikestores",
-            "condition": "Used | Astroloubi",
-            "price_usd": 1000,
-            "live_count": 25,
-        },
-        # … more items …
-    ]
-    return demo_data
 
 
 
@@ -172,30 +63,32 @@ def read_items(current_user: str = Depends(get_current_username)):
 app.add_middleware(SessionMiddleware, secret_key=settings.SESSION_SECRET_KEY)
 
 
-# @app.middleware("http")
-# async def add_csp_header(request: Request, call_next):
-#     response: Response = await call_next(request)
+@app.middleware("http")
+async def add_csp_header(request: Request, call_next):
+    response: Response = await call_next(request)
 
-#     # If this is any of the docs or swagger-ui static assets, don't add CSP
-#     docs_paths = (
-#         "/docs",             # the HTML
-#         "/openapi.json",     # the spec
-#         "/redoc",            # if you use ReDoc
-#         "/static/swagger-ui" # the JS/CSS under FastAPI’s static mount
-#     )
-#     if not request.url.path.startswith(docs_paths):
-#         response.headers["Content-Security-Policy"] = (
-#             "default-src 'self'; "
-#             "script-src 'self'; "
-#             "style-src 'self'; "
-#             "object-src 'none'; "
-#             "base-uri 'none'; "
-#             "frame-ancestors 'none';"
-#         )
-#     return response
+    # If this is any of the docs or swagger-ui static assets, don't add CSP
+    docs_paths = (
+        "/docs",             # the HTML
+        "/openapi.json",     # the spec
+        "/redoc",            # if ReDoc is used
+        "/static/swagger-ui" # the JS/CSS under FastAPI’s static mount
+    )
+    if not request.url.path.startswith(docs_paths):
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self'; "
+            "style-src 'self'; "
+            "object-src 'none'; "
+            "base-uri 'none'; "
+            "frame-ancestors 'none';"
+        )
+    return response
 
-# Mount the routers, Order generally doesn’t matter but preferable that it doesn't overlap
-app.include_router(router, prefix="")            # /signup, /login
-app.include_router(oauth_router, prefix="")      # /auth/google/login, /auth/google/callback
-app.include_router(root_router, prefix="")       # other endpoints, /health, root
+# Mount the routers, Order matters on swagger
+app.include_router(users_router, prefix="")
+app.include_router(oauth_router, prefix="")      
+app.include_router(root_router, prefix="")     
+app.include_router(router, prefix="")           
+
 

@@ -5,15 +5,15 @@ import axios from "axios";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export const loginUser = async ({ identifier, password }) => {
-  // send the exact schema the backend validates:
   const payload = { identifier, password };
-
   console.log("→ POST /login payload:", payload);
 
   try {
-    const res = await axios.post(`${API_BASE}/login`, payload, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const res = await axios.post(
+      `${API_BASE}/login`,
+      payload,
+      { headers: { "Content-Type": "application/json" } }
+    );
     return res.data; // e.g. { access_token, ... }
   } catch (err) {
     console.error(
@@ -25,41 +25,84 @@ export const loginUser = async ({ identifier, password }) => {
   }
 };
 
-
 /**
  * registerUser
- * @param {{ username: string; email: string; password: string }} userData
- * @returns {Promise<object>} newly created user (or whatever the API returns)
+ * @param {{ username: string; email: string; password: string; name: string }} userData
+ * @returns {Promise<object>} pending status and message
  */
 export const registerUser = async (userData) => {
-  // e.g. { username, email, password }
-  console.log("→ POST /auth/register payload:", userData);
+  console.log("→ POST /signup payload:", userData);
 
   try {
     const res = await axios.post(
       `${API_BASE}/signup`,
       userData,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
-    return res.data; // e.g. { id, username, email, ... }
+    // backend returns { pending: true, message: "Verification email sent" }
+    return res.data;
   } catch (err) {
-    console.error("← registration error response:", err.response?.status, err.response?.data || err);
+    console.error(
+      "← registration error response:",
+      err.response?.status,
+      err.response?.data || err
+    );
     throw err;
   }
 };
 
+/**
+ * verifyEmail
+ * @param {string} token  verification token from email link
+ * @returns {Promise<object>} authentication result (e.g. { access_token, user })
+ */
+export const verifyEmail = async (token) => {
+  try {
+    const res = await axios.post(
+      `${API_BASE}/verify-email`,
+      { token },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    // backend returns e.g. { access_token, user }
+    return res.data;
+  } catch (err) {
+    console.error(
+      "← verify-email error response:", err.response?.status, err.response?.data || err
+    );
+    throw err;
+  }
+};
 
-
-
+/**
+ * resendVerificationEmail
+ * @param {{ email: string }} data
+ * @returns {Promise<object>} { message }
+ */
+export const resendVerificationEmail = async ({ email }) => {
+  try {
+    const res = await axios.post(
+      `${API_BASE}/resend-verification`,
+      { email },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return res.data; // e.g. { message: "Verification email resent" }
+  } catch (err) {
+    console.error(
+      "← resend-verification error response:",
+      err.response?.status,
+      err.response?.data || err
+    );
+    throw err;
+  }
+};
 
 export const fetchUserProfile = async (token) => {
   try {
-    const res = await axios.get(`${API_BASE}/user`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return res.data; // the user object
+    const res = await axios.get(
+      `${API_BASE}/user`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data;
   } catch (err) {
     console.error("Fetch profile error:", err);
     throw err;
@@ -67,9 +110,11 @@ export const fetchUserProfile = async (token) => {
 };
 
 export const verifyIdentifier = async (identifier) => {
-  // optional: check if email/username already exists
   try {
-    await axios.post(`${API_BASE}/auth/verify-identifier`, { identifier });
+    await axios.post(
+      `${API_BASE}/auth/verify-identifier`,
+      { identifier }
+    );
     return true;
   } catch (err) {
     const detail = err.response?.data?.detail;
@@ -78,25 +123,18 @@ export const verifyIdentifier = async (identifier) => {
   }
 };
 
-
-
 export const googleLogin = () => {
   if (!API_BASE) {
     console.error("VITE_API_BASE_URL is undefined!");
     return;
   }
 
-  // This is our frontend callback URL (not Google’s)
   const frontendRedirectUri = `${window.location.origin}/auth-success`;
   console.log("→ Frontend redirect_uri (to be sent to backend):", frontendRedirectUri);
 
-  // Build the URL for our backend’s Google-login endpoint
-  // The backend will receive our frontendRedirectUri and then
-  // redirect the user on to Google’s OAuth endpoint.
   const loginUrl = new URL(`${API_BASE}/auth/google/login`);
   loginUrl.searchParams.set("redirect_uri", frontendRedirectUri);
 
   console.log("→ Redirecting user to backend login URL:", loginUrl.toString());
   window.location.href = loginUrl.toString();
 };
-
