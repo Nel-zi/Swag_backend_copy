@@ -52,6 +52,20 @@ class VerifyIdentifierResponse(BaseModel):
     exists: bool
 
 
+class ForgotPasswordRequest(BaseModel):
+    identifier: str
+
+class ForgotPasswordResponse(BaseModel):
+    message: str
+class ResetPasswordRequest(BaseModel):
+    token: str
+    password: str
+
+class ResetPasswordResponse(BaseModel):
+    message: str
+
+
+
 class Item(BaseModel):
     id:         int
     title:      str

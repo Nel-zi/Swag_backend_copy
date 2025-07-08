@@ -2,25 +2,24 @@
   src/pages/Dashboard.js
   Example of a protected page: uses AuthContext token,
   fetches secured data via axios with Authorization header.
-  Adjust the endpoint to match the backend (e.g. "/auth/verify-identifier" or
-  other secured routes).
+  Includes a Logout button that clears auth state and redirects to login.
 */
 
-// src/pages/Dashboard.js
+
+
+
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { fetchItems } from "../api/items";
 
 export default function Dashboard({ axios: api }) {
-  // CHANGE: remove internal createAxiosInstance; use injected `api` prop
-  const { token } = useAuth(); // token still available if needed elsewhere
+  const { user, logout } = useAuth();
 
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // CHANGE: effect depends on injected `api`, not on local creation
     fetchItems(api)
       .then(setItems)
       .catch((err) => {
@@ -35,7 +34,16 @@ export default function Dashboard({ axios: api }) {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">For You</h1>
+      <header className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">For You</h1>
+        <button
+          onClick={logout}
+          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+        >
+          Log Out
+        </button>
+      </header>
+
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {items.map(item => (
           <div key={item.id} className="bg-white rounded-lg overflow-hidden shadow">

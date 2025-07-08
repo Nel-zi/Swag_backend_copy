@@ -18,7 +18,11 @@ from ..schemas import (
     UserResponse,                  
     ResendVerificationResponse,    
     ResendVerificationRequest,     
-    VerifyEmailRequest             
+    VerifyEmailRequest,
+    ForgotPasswordRequest,
+    ForgotPasswordResponse,
+    ResetPasswordRequest,
+    ResetPasswordResponse           
 )
 
 # In-memory user store
@@ -35,7 +39,7 @@ from ..root import router as root_router
 from ..config import settings
 
 # Email sending utility
-from app.utils.email import send_verification_email
+from app.utils.email import send_verification_email, send_reset_password_email
 
 # Instantiate the Users router
 router = APIRouter(tags=["Users"])
@@ -288,6 +292,97 @@ def get_current_username(
 
 
 
+
+
+
+# ======================================
+# === ENDPOINT: POST /auth/forgot-password ===
+# ======================================
+@router.post(
+    "/auth/forgot-password",
+    response_model=ForgotPasswordResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Initiate password reset by sending an email with reset token",
+)
+def forgot_password(
+    req: ForgotPasswordRequest,
+    background_tasks: BackgroundTasks,
+):
+    # Attempt to locate user by username or email
+    user_record = next(
+        ((u, d) for u, d in users.items()
+         if u == req.identifier or d.get("email") == req.identifier),
+        None
+    )
+    # Always respond success to avoid user enumeration
+    if user_record:
+        username, data = user_record
+        # Generate reset token and expiry
+        token = str(uuid4())
+        expires_at = datetime.utcnow() + timedelta(hours=1)
+        data["reset_token"] = token                                     #type: ignore
+        data["reset_token_expires_at"] = expires_at                     #type: ignore
+        # Construct reset link
+        reset_link = f"{settings.FRONTEND_URL}/reset-password?token={token}"
+        # Send reset email asynchronously
+        background_tasks.add_task(
+            send_reset_password_email,
+            data.get("email"),
+            reset_link,
+        )
+    return ForgotPasswordResponse(
+        message="If that account exists, you'll receive a password reset email shortly."
+    )
+
+
+
+
+
+
+# ======================================
+# === ENDPOINT: POST /auth/reset-password ===
+# ======================================
+@router.post(
+    "/auth/reset-password",
+    response_model=ResetPasswordResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Reset user's password using a valid reset token",
+)
+def reset_password(
+    req: ResetPasswordRequest,
+):
+    # Find the user by reset token
+    user_record = None
+    for username, data in users.items():
+        if data.get("reset_token") == req.token:
+            user_record = (username, data)
+            break
+    if not user_record:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token"
+        )
+    username, data = user_record
+    # Check token expiry
+    if data.get("reset_token_expires_at") < datetime.utcnow():  # type: ignore
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Reset token has expired"
+        )
+    # Update password and remove reset fields
+    data["hashed_password"] = hash_password(req.password)
+    data.pop("reset_token", None)
+    data.pop("reset_token_expires_at", None)
+    return ResetPasswordResponse(
+        message="Password has been reset successfully."
+    )
+
+
+
+
+
+
+
 # ===========================================
 # === ENDPOINT: GET debug users (/ _debug/users) ===
 # ===========================================
@@ -303,3 +398,4 @@ def get_debug_users():
 @router.get("/user", response_model=dict)
 def get_user(username: str = Depends(get_current_username)):
     return {"message": f"Hello, {username}"}
+

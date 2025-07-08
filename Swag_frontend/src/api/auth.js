@@ -138,3 +138,49 @@ export const googleLogin = () => {
   console.log("→ Redirecting user to backend login URL:", loginUrl.toString());
   window.location.href = loginUrl.toString();
 };
+
+/**
+ * requestPasswordReset
+ * @param {{ identifier: string }} data
+ * @returns {Promise<object>} { message }
+ */
+export const requestPasswordReset = async ({ identifier }) => {
+  try {
+    const res = await axios.post(
+      `${API_BASE}/auth/forgot-password`,
+      { identifier },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return res.data; // e.g. { message: "Reset email sent" }
+  } catch (err) {
+    console.error(
+      "← forgot-password error response:",
+      err.response?.status,
+      err.response?.data || err
+    );
+    throw err;
+  }
+};
+
+/**
+ * resetPassword
+ * @param {{ token: string; password: string }} data
+ * @returns {Promise<object>} { message }
+ */
+export const resetPassword = async ({ token, password }) => {
+  try {
+    const res = await axios.post(
+      `${API_BASE}/auth/reset-password`,
+      { token, password },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return res.data; // e.g. { message: "Password reset successful" }
+  } catch (err) {
+    console.error(
+      "← reset-password error response:",
+      err.response?.status,
+      err.response?.data || err
+    );
+    throw err;
+  }
+};

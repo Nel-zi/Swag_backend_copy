@@ -5,10 +5,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { createAxiosInstance } from "./api/axiosInstance";
 
-// now importing each step
 import LoginPage, {
   IdentifierPage,
-  PasswordPage
+  PasswordPage,
+  ForgotPasswordPage,
+  ResetPasswordPage
 } from "./pages/LoginPage";
 
 import SignupPage      from "./pages/SignupPage";
@@ -33,31 +34,23 @@ export default function App() {
         }
       />
 
-      {/* —————————————————————————————————————————— */}
       {/* Two‑step login flow */}
-      {/* redirect plain /login → the first step */}
       <Route
         path="/login"
         element={<Navigate to="/login/identifier" replace />}
       />
+      <Route path="/login/identifier" element={<IdentifierPage />} />
+      <Route path="/login/password"   element={<PasswordPage />} />
 
-      <Route
-        path="/login/identifier"
-        element={<IdentifierPage />}
-      />
+      {/* Forgot & Reset Password */}
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password"  element={<ResetPasswordPage />} />
 
-      <Route
-        path="/login/password"
-        element={<PasswordPage />}
-      />
+      {/* Signup & email flows */}
+      <Route path="/signup"         element={<SignupPage />} />
+      <Route path="/verify-email"   element={<VerifyEmailPage />} />
+      <Route path="/auth-success"   element={<AuthSuccessPage />} />
 
-      {/* —————————————————————————————————————————— */}
-      {/* Signup & email flows (unchanged) */}
-      <Route path="/signup"      element={<SignupPage />} />
-      <Route path="/verify-email" element={<VerifyEmailPage />} />
-      <Route path="/auth-success" element={<AuthSuccessPage />} />
-
-      {/* —————————————————————————————————————————— */}
       {/* Protected Dashboard */}
       <Route
         path="/dashboard"
