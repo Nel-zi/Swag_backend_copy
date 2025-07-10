@@ -81,7 +81,7 @@ def signup(
     expires_at = datetime.utcnow() + timedelta(hours=24)
 
     # Store user data
-    users[req.username] = {
+    users[req.username] = {                                                     #type:ignore
         "hashed_password": hash_password(req.password),
         "email": req.email,
         "name": req.name,

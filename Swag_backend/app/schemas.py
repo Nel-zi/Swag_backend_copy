@@ -1,5 +1,7 @@
 from pydantic import BaseModel, EmailStr, HttpUrl, Field
-from typing import Literal, Annotated
+from typing import Literal, Annotated, List
+from pydantic.types import conlist
+
 
 
 class SignUpRequest(BaseModel):
@@ -7,6 +9,8 @@ class SignUpRequest(BaseModel):
     email:    EmailStr
     password: Annotated[str, Field(min_length=8)]
     name:     Annotated[str, Field(min_length=1)]
+    location_zipcode: int                          # ← new: must match one of the Location.id values
+    category_ids: List[int] = Field(default_factory=list, max_items=3)              #type:ignore
 
 
 class SignUpResponse(BaseModel):
@@ -27,6 +31,15 @@ class TokenResponse(BaseModel):
 
 class AuthResponse(TokenResponse):
     user: UserResponse
+
+
+class CategoryOut(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
 
 
 class VerifyEmailRequest(BaseModel):
@@ -76,3 +89,6 @@ class Item(BaseModel):
     price_usd:  float
     currency:   Literal["USD"] = "USD"
     live_count: int
+
+
+

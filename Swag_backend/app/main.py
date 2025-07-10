@@ -2,17 +2,16 @@ from fastapi import FastAPI, Depends, HTTPException, APIRouter, Request, Respons
 from starlette.middleware.sessions import SessionMiddleware
 
 from .config import settings
-from .schemas import Item
+from .schemas import Item, CategoryOut
 from .data_store import users
 from .oauth import router as oauth_router
 from .root import router as root_router
 from .routers.users import router as users_router
 from .routers.users import get_current_username
-from .data_store import items
+from .data_store import items, categories
 
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-
 
 
 # Define “users” router
@@ -40,6 +39,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
+
+
+
+@router.get(
+    "/categories",
+    response_model=List[CategoryOut],
+    summary="List all available categories"
+)
+def get_categories() -> List[CategoryOut]:
+    """
+    Returns a list of categories with their IDs and display names.
+    """
+    return categories                   #type:ignore
 
 
 
